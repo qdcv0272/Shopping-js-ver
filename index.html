@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css" />
+    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="./css/main.css" />
+
+    <script src="./js/resize.js"></script>
+    <title>shopping</title>
+  </head>
+  <body>
+    <div id="root">
+      <div class="login-page">
+        <div class="login-container">
+          <div class="title">로그인</div>
+          <div class="login-box">
+            <input id="loginId" class="login-id input-box" type="text" placeholder="아이디" />
+            <input id="loginPassword" class="login-password input-box" type="password" placeholder="비밀번호" />
+            <label class="save-label"><input id="loginSave" class="login-saveid" type="checkbox" /> 아이디 저장</label>
+            <button id="loginBtn" disabled>로그인</button>
+            <div class="action-links">
+              <button id="signupBtn" class="link-btn" type="button">회원가입</button>
+              <button id="findPwBtn" class="link-btn" type="button">비밀번호 찾기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="signup-page d-none"></div>
+      <div class="shopping-page d-none"></div>
+    </div>
+    <script src="./js/main.js"></script>
+    <script src="./js/signup.js"></script>
+  </body>
+</html>
