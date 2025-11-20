@@ -5,7 +5,11 @@
   background-color: black;
 }
 
-.login-page {
+/* login-page */
+
+/* 얘는 같이 */
+.login-page,
+.signup-page {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -49,7 +53,7 @@
 }
 
 .login-page .login-container .login-box .input-box {
-  width: 100%;
+  width: auto;
   margin-bottom: 8px;
   padding: 10px 12px;
   border: 1px solid #ccc;
@@ -66,46 +70,81 @@
   max-width: 320px;
 }
 
-.save-label {
-  display: inline-flex;
+/* signup-page */
+.signup-page .signup-container {
+  background-color: cornsilk;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 14px;
+  justify-content: center;
+  gap: 16px;
+  flex-direction: column;
+  width: 100%;
+  max-width: 448px;
+  padding: 24px;
+  box-sizing: border-box;
+  border-radius: 8px;
 }
 
-#loginBtn {
+.signup-page .signup-container .title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.signup-page .signup-container .input-box {
   width: 100%;
+  max-width: 320px;
   padding: 10px 12px;
-  margin-top: 8px;
-  background-color: #1976d2;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.hint {
+  width: 100%;
+  max-width: 320px;
+  font-size: 13px;
+  color: #666;
+  margin-top: -6px;
+  margin-bottom: 6px;
+}
+.hint.error {
+  color: #d32f2f;
+}
+.hint.valid {
+  color: #2e7d32;
+}
+
+.signup-actions {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  max-width: 320px;
+}
+.btn-primary {
+  flex: 1;
+  padding: 10px;
+  background: #1976d2;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
-
-#loginBtn[disabled] {
-  background-color: #9fbce6;
-  cursor: not-allowed;
-}
-
-.action-links {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-  justify-content: center;
-}
-
-.link-btn {
+.btn-secondary {
+  padding: 10px;
   background: transparent;
-  border: none;
-  color: #1976d2;
-  text-decoration: underline;
+  border: 1px solid #ccc;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 15px;
-  padding: 2px 4px;
+}
+.signup-message {
+  color: #d32f2f;
+  font-size: 14px;
+  min-height: 18px;
 }
 
-.link-btn:focus {
-  outline: 2px solid rgba(25, 118, 210, 0.2);
+/* shopping-page */
+.shopping-page {
+  width: 100%;
+  height: 100%;
+  background-color: #2e7d32;
 }

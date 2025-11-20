@@ -26,11 +26,41 @@
             </div>
           </div>
         </div>
+        <div class="error-pop signup-id-popup d-none">
+          ID or Password Error <br />
+          형식에 맞춰서 해줘 <br />
+          아이디 비번 찾기 눌러
+          <button class="error-btn">확인</button>
+        </div>
       </div>
-      <div class="signup-page d-none"></div>
-      <div class="shopping-page d-none"></div>
+      <div class="signup-page d-none">
+        <div class="signup-container">
+          <div class="title">회원가입</div>
+          <input id="signup-id" type="text" class="input-box signup-id" placeholder="아이디" />
+          <div id="signup-id-hint" class="hint">영어+숫자 조합 4글자 이상</div>
+
+          <input id="signup-email" type="email" class="input-box signup-email" placeholder="이메일" />
+          <div id="signup-email-hint" class="hint">이메일 형식인지 확인합니다</div>
+
+          <input id="signup-password" type="password" class="input-box signup-password" placeholder="비밀번호" />
+          <div id="signup-password-hint" class="hint">대문자+소문자+특수문자 포함 6글자 이상</div>
+
+          <input id="signup-set-password" type="password" class="input-box signup-set-password" placeholder="비밀번호 확인" />
+          <div id="signup-set-password-hint" class="hint">비밀번호와 동일한지 확인합니다</div>
+          <div class="signup-actions">
+            <button id="signupSubmit" class="btn-primary" type="button">가입하기</button>
+            <button id="signupCancel" class="btn-secondary" type="button">취소</button>
+          </div>
+          <div id="signupMessage" class="signup-message" aria-live="polite"></div>
+        </div>
+      </div>
+      <div class="shopping-page d-none">
+        <div class="success-pop d-none">
+          로그인 성공
+          <div class="success-btn">확인</div>
+        </div>
+      </div>
     </div>
-    <script src="./js/main.js"></script>
-    <script src="./js/signup.js"></script>
+    <script type="module" src="/js/main.js"></script>
   </body>
 </html>
