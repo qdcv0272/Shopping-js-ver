@@ -3,7 +3,7 @@
     window.openSignup = openSignup;
     window.closeSignup = closeSignup;
 
-    const signupBtn = document.getElementById("signupBtn");
+    const signupBtn = document.querySelector(".signup-btn");
     if (signupBtn) {
       signupBtn.addEventListener("click", function () {
         try {
@@ -14,15 +14,19 @@
       });
     }
 
-    const idInput = document.getElementById("signup-id");
-    const emailInput = document.getElementById("signup-email");
-    const pwInput = document.getElementById("signup-password");
-    const pw2Checknput = document.getElementById("signup-set-password");
+    const idInput = document.querySelector(".signup-id");
+    const emailInput = document.querySelector(".signup-email");
+    const pwInput = document.querySelector(".signup-password");
+    const pw2Checknput = document.querySelector(".signup-set-password");
+    const idCheckBtn = document.querySelector(".signup-id-check-btn");
+    const idOkCheckbox = document.querySelector(".signup-id-ok");
+    const emailCheckBtn = document.querySelector(".signup-email-check-btn");
+    const emailOkCheckbox = document.querySelector(".signup-email-ok");
 
-    const idHint = document.getElementById("signup-id-hint");
-    const emailHint = document.getElementById("signup-email-hint");
-    const pwHint = document.getElementById("signup-password-hint");
-    const pw2Hint = document.getElementById("signup-set-password-hint");
+    const idHint = document.querySelector(".signup-id-hint");
+    const emailHint = document.querySelector(".signup-email-hint");
+    const pwHint = document.querySelector(".signup-password-hint");
+    const pw2Hint = document.querySelector(".signup-set-password-hint");
 
     // 입력할때마다
     if (idInput) {
@@ -55,6 +59,91 @@
       });
     }
 
+    // 중복 체크 버튼 이벤트
+    if (idCheckBtn) {
+      idCheckBtn.addEventListener("click", function () {
+        const id = idInput && idInput.value ? idInput.value.trim() : "";
+        // 포맷 확인 먼저
+        if (!validateId(id)) {
+          updateHint(idHint, false, "영어+숫자 조합 4글자 이상", "영어와 숫자를 조합해 4자 이상 입력하세요");
+          if (msg) {
+            msg.style.color = "#d32f2f";
+            msg.textContent = "아이디 형식을 확인하세요.";
+          }
+          if (idOkCheckbox) idOkCheckbox.checked = false;
+          return;
+        }
+        // 저장된 users에서 중복 검사
+        try {
+          const raw = localStorage.getItem("users");
+          const users = raw ? JSON.parse(raw) : [];
+          const exists = users.some((u) => (u.id || "").toLowerCase() === id.toLowerCase());
+          if (exists) {
+            if (msg) {
+              msg.style.color = "#d32f2f";
+              msg.textContent = "이미 사용 중인 아이디입니다.";
+            }
+            updateHint(idHint, false, "영어+숫자 조합 4글자 이상", "이미 사용 중인 아이디입니다.");
+            if (idOkCheckbox) idOkCheckbox.checked = false;
+          } else {
+            if (msg) {
+              msg.style.color = "#2e7d32";
+              msg.textContent = "사용 가능한 아이디입니다.";
+            }
+            updateHint(idHint, true, "영어+숫자 조합 4글자 이상", "영어와 숫자를 조합해 4자 이상 입력하세요");
+            if (idOkCheckbox) idOkCheckbox.checked = true;
+          }
+        } catch (e) {
+          if (msg) {
+            msg.style.color = "#d32f2f";
+            msg.textContent = "검사 중 오류가 발생했습니다.";
+          }
+          if (idOkCheckbox) idOkCheckbox.checked = false;
+        }
+      });
+    }
+
+    if (emailCheckBtn) {
+      emailCheckBtn.addEventListener("click", function () {
+        const email = emailInput && emailInput.value ? emailInput.value.trim() : "";
+        if (!validateEmail(email)) {
+          updateHint(emailHint, false, "이메일 형식입니다", "유효한 이메일 형식이 아닙니다");
+          if (msg) {
+            msg.style.color = "#d32f2f";
+            msg.textContent = "이메일 형식을 확인하세요.";
+          }
+          if (emailOkCheckbox) emailOkCheckbox.checked = false;
+          return;
+        }
+        try {
+          const raw = localStorage.getItem("users");
+          const users = raw ? JSON.parse(raw) : [];
+          const exists = users.some((u) => (u.email || "").toLowerCase() === email.toLowerCase());
+          if (exists) {
+            if (msg) {
+              msg.style.color = "#d32f2f";
+              msg.textContent = "이미 사용 중인 이메일입니다.";
+            }
+            updateHint(emailHint, false, "이메일 형식입니다", "이미 등록된 이메일입니다.");
+            if (emailOkCheckbox) emailOkCheckbox.checked = false;
+          } else {
+            if (msg) {
+              msg.style.color = "#2e7d32";
+              msg.textContent = "사용 가능한 이메일입니다.";
+            }
+            updateHint(emailHint, true, "이메일 형식입니다", "유효한 이메일 형식이 아닙니다");
+            if (emailOkCheckbox) emailOkCheckbox.checked = true;
+          }
+        } catch (e) {
+          if (msg) {
+            msg.style.color = "#d32f2f";
+            msg.textContent = "검사 중 오류가 발생했습니다.";
+          }
+          if (emailOkCheckbox) emailOkCheckbox.checked = false;
+        }
+      });
+    }
+
     function updateHint(el, ok, okText, failText) {
       if (!el) return;
       if (ok === null) {
@@ -73,16 +162,16 @@
       }
     }
 
-    const submitBtn = document.getElementById("signupSubmit");
-    const cancelBtn = document.getElementById("signupCancel");
-    const msg = document.getElementById("signupMessage");
+    const submitBtn = document.querySelector(".signup-submit");
+    const cancelBtn = document.querySelector(".signup-cancel");
+    const msg = document.querySelector(".signup-message");
 
     if (submitBtn) {
       submitBtn.addEventListener("click", function () {
-        const id = (document.getElementById("signup-id") || {}).value || "";
-        const email = (document.getElementById("signup-email") || {}).value || "";
-        const pw = (document.getElementById("signup-password") || {}).value || "";
-        const pw2 = (document.getElementById("signup-set-password") || {}).value || "";
+        const id = idInput && idInput.value ? idInput.value.trim() : "";
+        const email = emailInput && emailInput.value ? emailInput.value.trim() : "";
+        const pw = pwInput && pwInput.value ? pwInput.value : "";
+        const pw2 = pw2Checknput && pw2Checknput.value ? pw2Checknput.value : "";
 
         // reset message
         if (msg) {
@@ -137,7 +226,8 @@
 
         // 자동으로 로그인 아이디 채우기 및 닫기
         try {
-          document.getElementById("loginId").value = id.trim();
+          const loginIdInput = document.querySelector(".login-id");
+          if (loginIdInput) loginIdInput.value = id.trim();
         } catch (e) {}
         setTimeout(function () {
           if (msg) msg.textContent = "";
@@ -148,7 +238,6 @@
 
     if (cancelBtn) {
       cancelBtn.addEventListener("click", function () {
-        const msg = document.getElementById("signupMessage");
         if (msg) msg.textContent = "";
         closeSignup();
       });

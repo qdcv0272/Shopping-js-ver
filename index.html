@@ -11,49 +11,98 @@
     <title>shopping</title>
   </head>
   <body>
-    <div id="root">
+    <div class="root">
+      <!-- 로그인 페이지 -->
       <div class="login-page">
         <div class="login-container">
           <div class="title">로그인</div>
           <div class="login-box">
-            <input id="loginId" class="login-id input-box" type="text" placeholder="아이디" />
-            <input id="loginPassword" class="login-password input-box" type="password" placeholder="비밀번호" />
-            <label class="save-label"><input id="loginSave" class="login-saveid" type="checkbox" /> 아이디 저장</label>
-            <button id="loginBtn" disabled>로그인</button>
+            <input class="login-id input-box" type="text" placeholder="아이디" />
+            <input class="login-password input-box" type="password" placeholder="비밀번호" />
+            <label class="save-label"><input class="login-saveid" type="checkbox" /> 아이디 저장</label>
+            <button class="login-btn" disabled>로그인</button>
             <div class="action-links">
-              <button id="signupBtn" class="link-btn" type="button">회원가입</button>
-              <button id="findPwBtn" class="link-btn" type="button">비밀번호 찾기</button>
+              <button class="signup-btn link-btn" type="button">회원가입</button>
+              <button class="find-id-btn link-btn" type="button">아이디 찾기</button>
+              <button class="find-pw-btn link-btn" type="button">비밀번호 찾기</button>
             </div>
           </div>
-        </div>
-        <div class="error-pop signup-id-popup d-none">
-          ID or Password Error <br />
-          형식에 맞춰서 해줘 <br />
-          아이디 비번 찾기 눌러
-          <button class="error-btn">확인</button>
+          <div class="error-pop signup-id-popup d-none">
+            ID or Password Error <br />
+            형식에 맞춰서 해줘 <br />
+            아이디 비번 찾기 눌러
+            <button class="error-btn">확인</button>
+          </div>
         </div>
       </div>
+      <!-- 회원가입 -->
       <div class="signup-page d-none">
         <div class="signup-container">
           <div class="title">회원가입</div>
-          <input id="signup-id" type="text" class="input-box signup-id" placeholder="아이디" />
-          <div id="signup-id-hint" class="hint">영어+숫자 조합 4글자 이상</div>
-
-          <input id="signup-email" type="email" class="input-box signup-email" placeholder="이메일" />
-          <div id="signup-email-hint" class="hint">이메일 형식인지 확인합니다</div>
-
-          <input id="signup-password" type="password" class="input-box signup-password" placeholder="비밀번호" />
-          <div id="signup-password-hint" class="hint">대문자+소문자+특수문자 포함 6글자 이상</div>
-
-          <input id="signup-set-password" type="password" class="input-box signup-set-password" placeholder="비밀번호 확인" />
-          <div id="signup-set-password-hint" class="hint">비밀번호와 동일한지 확인합니다</div>
-          <div class="signup-actions">
-            <button id="signupSubmit" class="btn-primary" type="button">가입하기</button>
-            <button id="signupCancel" class="btn-secondary" type="button">취소</button>
+          <div class="input-with-check">
+            <input class="input-box signup-id" type="text" placeholder="아이디" />
+            <button class="signup-id-check-btn link-btn" type="button">중복</button>
+            <label class="check-label"> <input class="signup-id-ok" type="checkbox" disabled /> 사용 가능 </label>
           </div>
-          <div id="signupMessage" class="signup-message" aria-live="polite"></div>
+          <div class="signup-id-hint hint">영어+숫자 조합 4글자 이상</div>
+
+          <div class="input-with-check">
+            <input class="input-box signup-email" type="email" placeholder="이메일" />
+            <button class="signup-email-check-btn link-btn" type="button">중복</button>
+            <label class="check-label"> <input class="signup-email-ok" type="checkbox" disabled /> 사용 가능 </label>
+          </div>
+          <div class="signup-email-hint hint">이메일 형식인지 확인합니다</div>
+
+          <input class="input-box signup-password" type="password" placeholder="비밀번호" />
+          <div class="signup-password-hint hint">대문자+소문자+특수문자 포함 6글자 이상</div>
+
+          <input class="input-box signup-set-password" type="password" placeholder="비밀번호 확인" />
+          <div class="signup-set-password-hint hint">비밀번호와 동일한지 확인합니다</div>
+          <div class="signup-actions">
+            <button class="signup-submit btn-primary" type="button">가입하기</button>
+            <button class="signup-cancel btn-secondary" type="button">취소</button>
+          </div>
+          <div class="signup-message" aria-live="polite"></div>
         </div>
       </div>
+      <!-- 아이디 비번 찾기 -->
+      <div class="info-pw-page d-none">
+        <div class="info-container">
+          <div class="title">비밀번호 찾기</div>
+          <p>이메일 치면 팝업</p>
+          <input class="input-box info-pw-id" type="email" placeholder="등록된 아이디을 입력하세요" />
+          <input class="input-box info-pw-email" type="email" placeholder="등록된 이메일을 입력하세요" />
+          <div class="info-actions">
+            <button class="info-submit info-pw-check btn-primary" type="button" disabled>Check</button>
+            <button class="info-close-pw-btn btn-secondary" type="button">닫기</button>
+          </div>
+        </div>
+
+        <div class="info-result-pop d-none">
+          <div class="info-result-text" aria-live="polite"></div>
+          <button class="info-result-copy btn-secondary" type="button">복사</button>
+          <button class="info-result-close btn-secondary" type="button">확인</button>
+        </div>
+      </div>
+
+      <div class="info-id-page d-none">
+        <div class="info-container">
+          <div class="title">아이디 찾기</div>
+          <p>이메일 치면 팝업</p>
+          <input class="input-box info-id-email" type="email" placeholder="등록된 이메일을 입력하세요" />
+          <div class="info-actions">
+            <button class="info-submit info-id-check btn-primary" type="button" disabled>Check</button>
+            <button class="info-close-id-btn btn-secondary" type="button">닫기</button>
+          </div>
+        </div>
+
+        <div class="info-result-pop d-none">
+          <div class="info-result-text" aria-live="polite"></div>
+          <button class="info-result-copy btn-secondary" type="button">복사</button>
+          <button class="info-result-close btn-secondary" type="button">확인</button>
+        </div>
+      </div>
+      <!-- 로그인 성공 -->
       <div class="shopping-page d-none">
         <div class="success-pop d-none">
           로그인 성공

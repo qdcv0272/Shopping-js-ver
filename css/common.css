@@ -14,7 +14,7 @@
   font-size: 14px;
 }
 
-#loginBtn {
+.login-btn {
   width: 100%;
   padding: 10px 12px;
   margin-top: 8px;
@@ -25,7 +25,7 @@
   cursor: pointer;
 }
 
-#loginBtn[disabled] {
+.login-btn[disabled] {
   background-color: #9fbce6;
   cursor: not-allowed;
 }
@@ -51,6 +51,44 @@
   outline: 2px solid rgba(25, 118, 210, 0.2);
 }
 
+/* Disabled states common styling for buttons and inputs */
+button[disabled],
+.btn-primary[disabled],
+.btn-secondary[disabled],
+.login-btn[disabled],
+.info-submit[disabled],
+.signup-submit[disabled],
+.error-btn[disabled],
+.link-btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn-primary[disabled] {
+  background-color: #9fbce6;
+  color: #fff;
+  border-color: transparent;
+}
+
+.btn-secondary[disabled] {
+  background-color: transparent;
+  border-color: #e0e0e0;
+  color: #999;
+}
+
+.link-btn[disabled] {
+  color: #9fbce6;
+  text-decoration: none;
+}
+
+/* Disabled input appearance */
+.input-box[disabled] {
+  background-color: #f5f5f5;
+  border-color: #e0e0e0;
+  color: #777;
+}
+
 /* error-pop */
 .error-pop {
   position: absolute;
@@ -72,6 +110,32 @@
   position: absolute;
   left: 310px;
   top: 410px;
+}
+
+.info-result-pop {
+  position: absolute;
+  left: 25%;
+  top: 25%;
+  width: 50%;
+  min-height: 470px;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  font-size: 18px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+.info-result-pop .info-result-close {
+  width: 120px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  color: #fff;
 }
 
 /* error button (generic) */

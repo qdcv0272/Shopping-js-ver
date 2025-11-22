@@ -1,11 +1,12 @@
 import { gsap } from "gsap";
 import "./signup.js";
+import "./infoFind.js";
 
 document.addEventListener("DOMContentLoaded", function () {
-  const idInput = document.getElementById("loginId");
-  const pwInput = document.getElementById("loginPassword");
-  const saveCheckbox = document.getElementById("loginSave");
-  const loginBtn = document.getElementById("loginBtn");
+  const idInput = document.querySelector(".login-id");
+  const pwInput = document.querySelector(".login-password");
+  const saveCheckbox = document.querySelector(".login-saveid");
+  const loginBtn = document.querySelector(".login-btn");
   const loginPage = document.querySelector(".login-page");
   const shoppingPage = document.querySelector(".shopping-page");
 
@@ -32,34 +33,45 @@ document.addEventListener("DOMContentLoaded", function () {
   if (idInput) idInput.addEventListener("input", updateButtonState);
   if (pwInput) pwInput.addEventListener("input", updateButtonState);
 
-  loginBtn.addEventListener("click", function () {
-    if (loginBtn.hasAttribute("disabled")) return;
+  if (loginBtn) {
+    loginBtn.addEventListener("click", function () {
+      if (loginBtn.hasAttribute("disabled")) return;
 
-    // 입력값 가져오기
-    const id = idInput.value.trim();
-    const pw = pwInput.value || "";
+      // 입력값 가져오기
+      const id = idInput ? idInput.value.trim() : "";
+      const pw = pwInput ? pwInput.value || "" : "";
 
-    // check users from localStorage (demo local auth)
-    let authOk = false;
-    try {
-      const raw = localStorage.getItem("users");
-      const users = raw ? JSON.parse(raw) : [];
-      const found = users.find((u) => (u.id || "") === id); //찾기
-      if (found && found.password === pw) authOk = true; // ok
-    } catch (e) {
-      authOk = false;
-    }
+      // check users from localStorage (demo local auth)
+      let authOk = false;
+      try {
+        const raw = localStorage.getItem("users");
+        const users = raw ? JSON.parse(raw) : [];
+        const found = users.find((u) => (u.id || "") === id); //찾기
+        if (found && found.password === pw) authOk = true; // ok
+      } catch (e) {
+        authOk = false;
+      }
 
-    if (!authOk) showErrorPop(500);
+      if (!authOk) {
+        // 로그인 실패: 에러 팝업 표시 후 더 이상 진행하지 않음
+        showErrorPop(3500);
+        return;
+      }
 
-    saveCheckbox.checked ? localStorage.setItem("savedLoginId", id) : localStorage.removeItem("savedLoginId");
+      // 로그인 성공처리
+      if (saveCheckbox && saveCheckbox.checked) {
+        localStorage.setItem("savedLoginId", id);
+      } else {
+        localStorage.removeItem("savedLoginId");
+      }
 
-    // 로그인 성공: 로그인 화면 숨기고 쇼핑 페이지 표시
-    if (loginPage) loginPage.classList.add("d-none");
-    if (shoppingPage) shoppingPage.classList.remove("d-none");
+      // 로그인 성공: 로그인 화면 숨기고 쇼핑 페이지 표시
+      if (loginPage) loginPage.classList.add("d-none");
+      if (shoppingPage) shoppingPage.classList.remove("d-none");
 
-    showSuccessPop();
-  });
+      showSuccessPop();
+    });
+  }
 
   // fun
   function hideErrorPopImmediate() {
