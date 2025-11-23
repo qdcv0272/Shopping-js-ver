@@ -76,12 +76,33 @@
             <button class="info-submit info-pw-check btn-primary" type="button" disabled>Check</button>
             <button class="info-close-pw-btn btn-secondary" type="button">닫기</button>
           </div>
+
+          <div class="info-reset-panel d-none" aria-live="polite">
+            <p class="info-reset-guide">이메일로 전송된 6자리 번호를 입력하세요.</p>
+            <div class="info-reset-code-row">
+              <input
+                class="input-box info-reset-code"
+                type="text"
+                inputmode="numeric"
+                maxlength="6"
+                placeholder="인증번호 6자리"
+              />
+              <button class="btn-secondary info-reset-resend" type="button">재전송</button>
+            </div>
+            <div class="info-reset-code-hint hint"></div>
+            <div class="info-reset-password-fields d-none">
+              <input class="input-box info-reset-password" type="password" placeholder="새 비밀번호" />
+              <input class="input-box info-reset-password-confirm" type="password" placeholder="새 비밀번호 확인" />
+              <div class="info-reset-password-hint hint"></div>
+              <button class="btn-primary info-reset-submit" type="button" disabled>비밀번호 변경</button>
+            </div>
+          </div>
         </div>
 
-        <div class="info-result-pop d-none">
-          <div class="info-result-text" aria-live="polite"></div>
-          <button class="info-result-copy btn-secondary" type="button">복사</button>
-          <button class="info-result-close btn-secondary" type="button">확인</button>
+        <div class="info-result-pop pw-page d-none">
+          <div class="info-result-text pw-page" aria-live="polite"></div>
+          <button class="info-result-copy pw-page btn-secondary" type="button">복사</button>
+          <button class="info-result-close pw-page btn-secondary" type="button">확인</button>
         </div>
       </div>
 
@@ -96,10 +117,10 @@
           </div>
         </div>
 
-        <div class="info-result-pop d-none">
-          <div class="info-result-text" aria-live="polite"></div>
-          <button class="info-result-copy btn-secondary" type="button">복사</button>
-          <button class="info-result-close btn-secondary" type="button">확인</button>
+        <div class="info-result-pop id-page d-none">
+          <div class="info-result-text id-page" aria-live="polite"></div>
+          <button class="info-result-copy id-page btn-secondary" type="button">복사</button>
+          <button class="info-result-close id-page btn-secondary" type="button">확인</button>
         </div>
       </div>
       <!-- 로그인 성공 -->

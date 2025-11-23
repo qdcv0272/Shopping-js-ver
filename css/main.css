@@ -260,6 +260,37 @@
   justify-content: flex-start;
 }
 
+.info-reset-panel {
+  width: 100%;
+  max-width: 380px;
+  margin: 16px auto 0;
+  padding: 16px;
+  background: rgba(25, 118, 210, 0.06);
+  border: 1px dashed #1976d2;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-sizing: border-box;
+}
+.info-reset-code-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.info-reset-code-row .input-box {
+  flex: 1 1 auto;
+  margin: 0;
+}
+.info-reset-password-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.info-reset-password-fields .input-box {
+  margin: 0;
+}
+
 .info-id-page {
   width: 100%;
   height: 100%;
