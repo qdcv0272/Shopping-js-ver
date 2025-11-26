@@ -1,79 +1,86 @@
 import { gsap } from "gsap";
-import "./signup.js";
-import "./infoFind.js";
+import "./signup/signup.js";
+import "./info/infoFind.js";
 
 document.addEventListener("DOMContentLoaded", function () {
-  const idInput = document.querySelector(".login-id");
-  const pwInput = document.querySelector(".login-password");
-  const saveCheckbox = document.querySelector(".login-saveid");
-  const loginBtn = document.querySelector(".login-btn");
-  const loginPage = document.querySelector(".login-page");
-  const shoppingPage = document.querySelector(".shopping-page");
+  const shoppingPage = document.querySelector(".shopping-page"); // 로그인 성공 후 페이지
+  const logoutBtn = document.querySelector("[data-logout-btn]"); // 로그 아웃
 
-  const errorPop = document.querySelector(".error-pop");
-  const errorBtn = errorPop ? errorPop.querySelector(".error-btn") : null;
+  const idInput = document.querySelector(".login-id"); // 아이디 인풋
+  const pwInput = document.querySelector(".login-password"); // 비번 인풋
+  const saveCheckbox = document.querySelector(".login-saveid"); // 아이디 저장 체크박스
+  const loginBtn = document.querySelector(".login-btn"); // 로그인 버튼
+  const loginPage = document.querySelector(".login-page"); // 로그인 페이지
 
-  const successPop = document.querySelector(".success-pop");
-  const successBtn = successPop ? successPop.querySelector(".success-btn") : null;
+  const errorPop = document.querySelector(".error-pop"); // 아이디 비번 틀렸을때 팝업
+  const errorBtn = errorPop.querySelector(".error-btn");
+
+  const successPop = document.querySelector(".success-pop"); // 성공팝업
+  const successBtn = successPop.querySelector(".success-btn"); // 성공팝업 확인
 
   let _errorHideTimer = null;
+  let currentUser = null;
+
+  // 로그인 키
+  // 로그인후 새로고침 했을때 로그인 해지 방지
+  const STORAGE_KEYS = {
+    savedId: "savedLoginId",
+    users: "users",
+    session: "shoppingActiveUserId",
+  };
 
   // Load saved id
   try {
-    const saved = localStorage.getItem("savedLoginId");
+    const saved = localStorage.getItem(STORAGE_KEYS.savedId);
     if (saved) idInput.value = saved;
   } catch (e) {
     // ignore
   }
 
   // event
-  if (errorBtn) errorBtn.addEventListener("click", hideErrorPopImmediate); // 아이디 비번 틀렸을때의 팝업
-  if (successBtn) successBtn.addEventListener("click", hideSuccessPopImmediate); // 로그인 성공 후 팝업
+  errorBtn.addEventListener("click", hideErrorPopImmediate); // 아이디 비번 틀렸을때의 팝업
+  successBtn.addEventListener("click", hideSuccessPopImmediate); // 로그인 성공 후 팝업
 
-  if (idInput) idInput.addEventListener("input", updateButtonState);
-  if (pwInput) pwInput.addEventListener("input", updateButtonState);
+  idInput.addEventListener("input", updateButtonState);
+  pwInput.addEventListener("input", updateButtonState);
 
-  if (loginBtn) {
-    loginBtn.addEventListener("click", function () {
-      if (loginBtn.hasAttribute("disabled")) return;
+  loginBtn.addEventListener("click", function () {
+    if (loginBtn.hasAttribute("disabled")) return;
 
-      // 입력값 가져오기
-      const id = idInput ? idInput.value.trim() : "";
-      const pw = pwInput ? pwInput.value || "" : "";
+    // 입력값 가져오기
+    const id = idInput ? idInput.value.trim() : "";
+    const pw = pwInput ? pwInput.value || "" : "";
 
-      // check users from localStorage (demo local auth)
-      let authOk = false;
-      try {
-        const raw = localStorage.getItem("users");
-        const users = raw ? JSON.parse(raw) : [];
-        const found = users.find((u) => (u.id || "") === id); //찾기
-        if (found && found.password === pw) authOk = true; // ok
-      } catch (e) {
-        authOk = false;
-      }
+    const foundUser = findUserById(id);
+    const authOk = foundUser && foundUser.password === pw;
 
-      if (!authOk) {
-        // 로그인 실패: 에러 팝업 표시 후 더 이상 진행하지 않음
-        showErrorPop(3500);
-        return;
-      }
+    if (!authOk) {
+      // 로그인 실패: 에러 팝업 표시 후 더 이상 진행하지 않음
+      showErrorPop(3500);
+      return;
+    }
 
-      // 로그인 성공처리
-      if (saveCheckbox && saveCheckbox.checked) {
-        localStorage.setItem("savedLoginId", id);
-      } else {
-        localStorage.removeItem("savedLoginId");
-      }
+    persistSession(foundUser.id);
+    currentUser = foundUser;
+    notifyUserChange(foundUser.id);
 
-      // 로그인 성공: 로그인 화면 숨기고 쇼핑 페이지 표시
-      if (loginPage) loginPage.classList.add("d-none");
-      if (shoppingPage) shoppingPage.classList.remove("d-none");
+    if (saveCheckbox && saveCheckbox.checked) {
+      localStorage.setItem(STORAGE_KEYS.savedId, id);
+    } else {
+      localStorage.removeItem(STORAGE_KEYS.savedId);
+    }
 
-      showSuccessPop();
-    });
-  }
+    showShoppingView();
+    showSuccessPop();
+  });
+
+  logoutBtn.addEventListener("click", handleLogout);
+
+  tryRestoreSession();
+  updateButtonState();
 
   // fun
+  // gsap
   function hideErrorPopImmediate() {
     if (!errorPop) return;
     // gsap 로드 되었는지, .to()함수가 있는지
@@ -111,6 +118,57 @@ document.addEventListener("DOMContentLoaded", function () {
     idInput.value.trim() && pwInput.value.trim() ? loginBtn.removeAttribute("disabled") : loginBtn.setAttribute("disabled", "");
   }
 
+  function tryRestoreSession() {
+    let storedId = null;
+    try {
+      storedId = localStorage.getItem(STORAGE_KEYS.session);
+    } catch (e) {
+      storedId = null;
+    }
+    if (!storedId) return;
+    const user = findUserById(storedId);
+    if (!user) {
+      clearSession();
+      return;
+    }
+    currentUser = user;
+    showShoppingView();
+    notifyUserChange(user.id);
+  }
+
+  function findUserById(id) {
+    if (!id) return null;
+    try {
+      const raw = localStorage.getItem(STORAGE_KEYS.users);
+      const users = raw ? JSON.parse(raw) : [];
+      return users.find((u) => (u.id || "") === id) || null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function showShoppingView() {
+    if (loginPage) loginPage.classList.add("d-none");
+    if (shoppingPage) shoppingPage.classList.remove("d-none");
+    document.dispatchEvent(new CustomEvent("shopping:page-shown"));
+  }
+
+  function persistSession(userId) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.session, userId);
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function clearSession() {
+    try {
+      localStorage.removeItem(STORAGE_KEYS.session);
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
   function showErrorPop(duration) {
     if (!errorPop) return;
     // show
@@ -136,5 +194,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  updateButtonState();
+  function handleLogout() {
+    clearSession();
+    currentUser = null;
+    notifyUserChange(null);
+    if (pwInput) pwInput.value = "";
+    if (loginPage) loginPage.classList.remove("d-none");
+    if (shoppingPage) shoppingPage.classList.add("d-none");
+    updateButtonState();
+  }
+
+  function notifyUserChange(userId) {
+    document.dispatchEvent(
+      new CustomEvent("shopping:user-changed", {
+        detail: { userId: userId || null },
+      })
+    );
+  }
 });

@@ -89,6 +89,13 @@ button[disabled],
   color: #777;
 }
 
+.input-locked {
+  background-color: #f3f4f6;
+  border-color: #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
 /* error-pop */
 .error-pop {
   position: absolute;
@@ -108,8 +115,9 @@ button[disabled],
 
 .error-pop .error-btn {
   position: absolute;
-  left: 310px;
-  top: 410px;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
 }
 
 .info-result-pop {
@@ -186,6 +194,7 @@ button[disabled],
   flex-direction: column;
   gap: 16px;
   border-radius: 8px;
+  z-index: 1;
 }
 
 .success-pop .success-btn {

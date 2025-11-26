@@ -6,8 +6,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css" />
     <link rel="stylesheet" href="./css/common.css" />
     <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="./css/customScrollbar.css" />
 
-    <script src="./js/resize.js"></script>
+    <script src="./js/resize/resize.js"></script>
     <title>shopping</title>
   </head>
   <body>
@@ -129,8 +130,150 @@
           로그인 성공
           <div class="success-btn">확인</div>
         </div>
+
+        <div class="shopping-shell">
+          <header class="shopping-header">
+            <div class="brand">
+              <span class="brand-mark">S</span>
+              <div class="brand-text">
+                <strong>Shopping Star</strong>
+                <small>Daily essentials & lifestyle</small>
+              </div>
+            </div>
+            <div class="header-actions">
+              <input class="search-box" type="search" placeholder="상품 검색" data-search-input />
+              <button class="btn-secondary" type="button">알림</button>
+              <button class="btn-primary" type="button" data-cart-trigger>장바구니 (0)</button>
+              <button class="btn-secondary" type="button" data-logout-btn>로그아웃</button>
+            </div>
+          </header>
+
+          <div class="shopping-layout">
+            <aside class="shopping-sidebar">
+              <div class="sidebar-section">
+                <div class="sidebar-title">
+                  카테고리
+                  <button class="sidebar-toggle" type="button" data-category-toggle>
+                    <span class="toggle-icon">▼</span>
+                  </button>
+                </div>
+                <ul data-category-list>
+                  <li class="active" data-category="all">전체 보기</li>
+                  <li data-category="패션 · 의류">패션 · 의류</li>
+                  <li data-category="디지털 · 가전">디지털 · 가전</li>
+                  <li data-category="생활 · 주방">생활 · 주방</li>
+                  <li data-category="뷰티 · 헬스">뷰티 · 헬스</li>
+                  <li data-category="취미 · 문구">취미 · 문구</li>
+                </ul>
+              </div>
+              <div class="sidebar-section">
+                <div class="sidebar-title">
+                  가격대
+                  <button class="sidebar-toggle" type="button" data-price-toggle>
+                    <span class="toggle-icon">▼</span>
+                  </button>
+                </div>
+                <div data-price-list>
+                  <label><input type="checkbox" data-range="lt5" data-min="0" data-max="50000" /> 5만원 이하</label>
+                  <label><input type="checkbox" data-range="mid" data-min="50000" data-max="100000" /> 5만원 ~ 10만원</label>
+                  <label><input type="checkbox" data-range="gt10" data-min="100000" /> 10만원 이상</label>
+                </div>
+              </div>
+            </aside>
+
+            <main class="shopping-content">
+              <section class="shopping-hero">
+                <div>
+                  <p class="eyebrow">WEEKLY DEAL</p>
+                  <h2>오늘의 추천 상품</h2>
+                  <p>따뜻한 취미와 스마트한 일상을 위한 상품을 모았어요.</p>
+                  <div class="hero-actions">
+                    <button class="btn-primary">기획전 보기</button>
+                    <button class="btn-secondary">찜 120</button>
+                  </div>
+                </div>
+                <div class="hero-card">
+                  <div class="hero-label">최대 35% OFF</div>
+                  <p>모듈형 책상 세트</p>
+                  <span>남은 수량 12개</span>
+                </div>
+              </section>
+
+              <section class="shopping-toolbar">
+                <div class="tabs">
+                  <button class="active" data-sort="recommended" type="button">추천순</button>
+                  <button data-sort="popular" type="button">인기순</button>
+                  <button data-sort="latest" type="button">최신순</button>
+                  <button data-sort="priceAsc" type="button">가격 낮은순</button>
+                </div>
+                <div class="toolbar-actions">
+                  <label class="switch">
+                    <input type="checkbox" data-stock-only />
+                    <span>재고 있는 상품만</span>
+                  </label>
+                  <select data-page-size>
+                    <option value="20">20개씩 보기</option>
+                    <option value="40">40개씩 보기</option>
+                    <option value="60">60개씩 보기</option>
+                  </select>
+                </div>
+              </section>
+
+              <section class="product-grid" data-product-grid>
+                <div class="product-grid-empty" data-product-empty>상품을 불러오는 중입니다...</div>
+              </section>
+
+              <section class="product-detail d-none" data-product-detail>
+                <div class="product-detail-header">
+                  <button class="link-btn" type="button" data-detail-close>← 목록으로 돌아가기</button>
+                </div>
+                <div class="product-detail-content">
+                  <div class="product-detail-media">
+                    <img data-detail-image src="https://placehold.co/600x400?text=Product" alt="선택된 상품 이미지" />
+                  </div>
+                  <div class="product-detail-info">
+                    <p class="detail-category" data-detail-category>카테고리</p>
+                    <h3 data-detail-name>상품명을 선택하세요</h3>
+                    <p class="detail-price" data-detail-price>₩ 0</p>
+                    <p class="detail-description" data-detail-description>상품을 선택하면 상세 설명이 표시됩니다.</p>
+                    <div class="detail-meta">
+                      <span data-detail-stock>재고 정보</span>
+                      <span data-detail-popularity>인기도 정보</span>
+                    </div>
+                    <div class="detail-actions">
+                      <button class="btn-primary detail-add-btn" type="button" data-detail-add disabled>장바구니 추가</button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </main>
+
+            <aside class="shopping-cart">
+              <div class="cart-title">오늘 담은 상품</div>
+              <div class="cart-items" data-cart-items>
+                <p class="cart-empty" data-cart-empty>장바구니가 비어 있습니다.</p>
+              </div>
+              <div class="cart-summary">
+                <div class="row">
+                  <span>상품 금액</span>
+                  <strong data-cart-subtotal>₩ 0</strong>
+                </div>
+                <div class="row">
+                  <span>배송비</span>
+                  <strong class="free" data-cart-shipping>무료</strong>
+                </div>
+                <div class="row total">
+                  <span>총 결제 금액</span>
+                  <strong data-cart-total>₩ 0</strong>
+                </div>
+              </div>
+              <button class="btn-primary checkout-btn oder-btn" type="button" data-checkout-btn disabled>주문하기</button>
+            </aside>
+          </div>
+        </div>
       </div>
     </div>
     <script type="module" src="/js/main.js"></script>
+    <script type="module" src="/js/shop/shopping.js"></script>
   </body>
 </html>
